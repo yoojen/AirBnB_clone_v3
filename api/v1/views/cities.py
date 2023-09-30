@@ -51,3 +51,20 @@ def post_city(state_id):
     new_city = City(state_id=state_id,**data)
     new_city.save()
     return jsonify(new_city.to_dict()), 201
+
+
+@app_views.route('/cities/<city_id>', methods=['PUT'], strict_slashes=False)
+def put_city(city_id):
+    """
+    update a city object from the storage
+    """
+    if not request.json:
+        return jsonify({"error": "Not a JSON"}), 400
+    city = storage.get(City, city_id)
+    if city is None:
+        return jsonify(error="Not a JSON"), 400
+    for k, v in request.json.items():
+        if k not in ['id', 'created_at', 'updated_at']:
+            setattr(city, k, v)
+    city.save()
+    return jsonify(city.to_dict()), 200
