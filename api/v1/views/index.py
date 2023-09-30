@@ -8,7 +8,8 @@ from flask import jsonify
 @app_views.route('/status', strict_slashes=False)
 def showStatus():
     """
-    showthe status of api
+    show the status of api
+        statatus: OK
     """
     obj = {"status": "OK"}
     return jsonify(obj)
@@ -18,6 +19,7 @@ def showStatus():
 def showStats():
     """
     show stats of objects
+        return type: JSON
     """
     obj = {
             "amenities": storage.count('Amenityi'),
