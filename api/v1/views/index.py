@@ -10,7 +10,7 @@ def showStatus():
     obj = {"status": "OK"}
     return jsonify(obj)
 
-@app_views.route('/stats', strict_slashes=False)
+@app_views.route('/stats',  methods=['GET'], strict_slashes=False)
 def showStats():
     """
     show stats of objects
