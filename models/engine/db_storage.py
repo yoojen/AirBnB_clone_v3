@@ -79,12 +79,12 @@ class DBStorage:
         """
         return object based on class passed as argument
         """
-
-        obj = self.all(cls)
-        for singleobj in obj.values():
-            if id == singleobj.id:
-                return singleobj
-        print("___________________________")
+        obj = self.__session.query(cls).all()
+        for single in obj:
+            if single.id == str(id):
+                return single
+        return None
+    
     def count(self, cls=None):
         """
         count number of objects

@@ -5,7 +5,7 @@ creates view for states
 from api.v1.views import app_views
 from models.state import State
 from models import storage
-from flask import jsonify, request
+from flask import jsonify, request, abort
 
 
 @app_views.route('/states', methods=['GET'], strict_slashes=False)
@@ -62,4 +62,17 @@ def put_state(state_id):
             setattr(state, k, v)
     state.save()
     return jsonify(state.to_dict()), 200
-    
+   
+
+
+@app_views.route('/states/<state_id>', methods=['DELETE'], strict_slashes=False)
+def delete_state(state_id):
+    """
+    delete state objects from storage
+    """
+    try:
+        state = storage.get('State', state_id)
+        storage.delete(state)
+        return jsonify({}), 200
+    except Exception:
+        abort(404)
