@@ -28,3 +28,7 @@ def showStats():
             "users": storage.count('User')
             }
     return jsonify(obj)
+
+
+if __name__ == "__main__":
+    pass
