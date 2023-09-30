@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+""" center of app! which used to connect to api"""
 import os
 from flask import Flask, Blueprint
 from models import storage
