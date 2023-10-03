@@ -18,6 +18,7 @@ def all_users():
         obj.append(user.to_dict())
     return jsonify(obj)
 
+
 @app_views.route('/users/<user_id>', methods=['GET'], strict_slashes=False)
 def user_by_id(user_id):
     """
@@ -27,7 +28,8 @@ def user_by_id(user_id):
     user = storage.get(User, user_id)
     if user is None:
         abort(404)
-    users = [single.to_dict() for single in user.values() if single.id == user_id]
+    users = [single.to_dict() for single in user.values()
+             if single.id == user_id]
     return jsonify(users)
 
 
@@ -69,4 +71,3 @@ def put_user(user_id):
             setattr(user, k, v)
     user.save()
     return jsonify(user.to_dict()), 200
-
