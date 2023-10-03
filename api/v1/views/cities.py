@@ -16,7 +16,7 @@ def cities_by_states(state_id):
     obj = []
     city = storage.all(City)
     if city is None:
-        return jsonify(error="Not a JSON"), 400
+        abort(404)
     for single in city.values():
         if single.state_id == state_id:
             obj.append(single.to_dict())
