@@ -8,7 +8,8 @@ from models import storage
 from flask import jsonify, request, abort
 
 
-@app_views.route('/cities/<city_id>/places', methods=['GET'], strict_slashes=False)
+@app_views.route('/cities/<city_id>/places', methods=['GET'],
+                 strict_slashes=False)
 def place_by_cities(city_id):
     """
     return all places by cities
@@ -21,7 +22,7 @@ def place_by_cities(city_id):
     if place is None:
         abort(404)
     cities = [single.to_dict() for single in place.values()
-              if single.city_id== city.id]
+              if single.city_id == city.id]
     return jsonify(cities)
 
 
@@ -38,7 +39,8 @@ def all_places(place_id):
     return jsonify(places)
 
 
-@app_views.route('cities/<city_id>/places', methods=['POST'], strict_slashes=False)
+@app_views.route('cities/<city_id>/places', methods=['POST'],
+                 strict_slashes=False)
 def post_place(city_id):
     """
     post place object in the storage
