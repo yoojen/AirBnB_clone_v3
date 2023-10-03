@@ -45,7 +45,7 @@ def post_place(city_id):
     """
     city = storage.get(City, city_id)
     place = storage.all(Place)
-    if place is None:
+    if place is None or city is None:
         abort(404)
     if not request.json:
         return jsonify(error="Not a JSON"), 400
