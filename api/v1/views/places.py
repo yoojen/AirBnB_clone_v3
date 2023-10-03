@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-creates view for places
+Creation of view for places that are in the storage
 """
 from api.v1.views import app_views
 from models.place import Place
