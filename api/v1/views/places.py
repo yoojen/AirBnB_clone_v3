@@ -2,6 +2,7 @@
 """Creation of view for places that are in the storage"""
 from api.v1.views import app_views
 from models.place import Place
+from models.user import User
 from models.city import City
 from models import storage
 from flask import jsonify, request, abort
@@ -50,7 +51,7 @@ def post_place(city_id):
         return jsonify(error="Not a JSON"), 400
     if 'user_id' not in request.json:
         return({"error": "Missing user_id"}), 400
-    user = storage.get(User, request.json().get('user_id'))
+    user = storage.get(User, request.get_json().get('user_id'))
     if user is None:
         abort(404)
     if 'name' not in request.json:
