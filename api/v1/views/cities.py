@@ -19,12 +19,8 @@ def cities_by_states(state_id):
     state = storage.get(State, state_id)
     if state is None:
         abort(404)
-    for single in city.values():
-        if single.state_id == state_id:
-            obj.append(single.to_dict())
-            print(obj)
-    return jsonify(obj)
-
+    cities = [single.to_dict() for single in city.values() if single.state_id == state_id]
+    return jsonify(cities), 201
 
 @app_views.route('cities/<city_id>', methods=['GET'], strict_slashes=False)
 def all_cities(city_id):
@@ -32,6 +28,8 @@ def all_cities(city_id):
     returns all cities in the storage
     """
     cities = []
+    if storage.get(City, city_id) is None:
+        abort(404)
     for city in storage.all(City).values():
         if city_id == city.id:
             cities.append(city.to_dict())
@@ -44,11 +42,14 @@ def post_city(state_id):
     post city object in the storage
     """
     city = storage.all(City)
+    state = storage.get(State, state_id)
+    if state is None:
+        abort(404)
     if city is None:
         abort(400)
     if not request.json:
         return jsonify(error="Not a JSON"), 400
-    if 'name' not in request.json:
+    if request.get_json().get('name') is None:
         return("Missing name"), 400
     data = request.get_json()
     new_city = City(state_id=state_id,**data)
