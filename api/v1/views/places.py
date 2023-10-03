@@ -19,7 +19,7 @@ def place_by_cities(city_id):
     place = storage.all(Place)
     if place is None:
         abort(404)
-    cities = [single.to_dict() for single in city.values()
+    cities = [single.to_dict() for single in place.values()
               if single.city_id== city.id]
     return jsonify(cities)
 
