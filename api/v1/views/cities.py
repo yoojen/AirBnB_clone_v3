@@ -9,7 +9,8 @@ from models import storage
 from flask import jsonify, request, abort
 
 
-@app_views.route('/states/<state_id>/cities', methods=['GET'], strict_slashes=False)
+@app_views.route('/states/<state_id>/cities', methods=['GET'],
+                 strict_slashes=False)
 def cities_by_states(state_id):
     """
     return all cities by states
@@ -19,10 +20,13 @@ def cities_by_states(state_id):
     state = storage.get(State, state_id)
     if state is None:
         abort(404)
-    cities = [single.to_dict() for single in city.values() if single.state_id == state_id]
+    cities = [single.to_dict() for single in city.values()
+              if single.state_id == state_id]
     return jsonify(cities), 201
 
-@app_views.route('cities/<city_id>', methods=['GET'], strict_slashes=False)
+
+@app_views.route('cities/<city_id>', methods=['GET'],
+                 strict_slashes=False)
 def all_cities(city_id):
     """
     returns all cities in the storage
@@ -36,7 +40,8 @@ def all_cities(city_id):
     return jsonify(cities)
 
 
-@app_views.route('states/<state_id>/cities', methods=['POST'], strict_slashes=False)
+@app_views.route('states/<state_id>/cities', methods=['POST'],
+                 strict_slashes=False)
 def post_city(state_id):
     """
     post city object in the storage
@@ -52,7 +57,7 @@ def post_city(state_id):
     if request.get_json().get('name') is None:
         return("Missing name"), 400
     data = request.get_json()
-    new_city = City(state_id=state_id,**data)
+    new_city = City(state_id=state_id, **data)
     new_city.save()
     return jsonify(new_city.to_dict()), 201
 
@@ -66,7 +71,7 @@ def put_city(city_id):
         return jsonify({"error": "Not a JSON"}), 400
     city = storage.get(City, city_id)
     if city is None:
-        return jsonify(error="Not a JSON"), 400
+        abort(404)
     for k, v in request.json.items():
         if k not in ['id', 'created_at', 'updated_at']:
             setattr(city, k, v)
