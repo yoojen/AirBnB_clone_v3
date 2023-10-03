@@ -24,14 +24,11 @@ def user_by_id(user_id):
     return all users by id provided
     """
     obj = []
-    user = storage.all(User)
+    user = storage.get(User, user_id)
     if user is None:
         abort(404)
-    for single in user.values():
-        if single.id == user_id:
-            obj.append(single.to_dict())
-    return jsonify(obj), 200
-
+    users = [single.to_dict() for single in user.values() if single.id == user_id]
+    return jsonify(users)
 
 
 @app_views.route('/users', methods=['POST'], strict_slashes=False)
@@ -44,6 +41,7 @@ def post_user():
         abort(400)
     if not request.json:
         return jsonify(error="Not a JSON"), 400
+#    if request.get_json().get('email')
     if 'email' not in request.json:
         return("Missing email"), 400
     elif 'password' not in request.json:
@@ -53,7 +51,7 @@ def post_user():
     for key, value in request.get_json().items():
         setattr(new_user, key, value)
     new_user.save()
-    return jsonify(new_user.to_dict()), 200
+    return jsonify(new_user.to_dict()), 201
 
 
 @app_views.route('/users/<user_id>', methods=['PUT'], strict_slashes=False)
