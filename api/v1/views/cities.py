@@ -22,7 +22,8 @@ def cities_by_states(state_id):
     for single in city.values():
         if single.state_id == state_id:
             obj.append(single.to_dict())
-    return jsonify(obj), 200
+            print(obj)
+    return jsonify(obj)
 
 
 @app_views.route('cities/<city_id>', methods=['GET'], strict_slashes=False)
