@@ -4,6 +4,7 @@ Creation of view for places that are in the storage
 """
 from api.v1.views import app_views
 from models.place import Place
+from models.city import City
 from models import storage
 from flask import jsonify, request, abort
 
@@ -13,7 +14,7 @@ def place_by_cities(city_id):
     """
     return all places by cities
     """
-    city = storage.get('City', city_id)
+    city = storage.get(City, city_id)
     if not city:
         abort(404)
     obj = []
@@ -30,7 +31,7 @@ def all_places(place_id):
     """
     returns all cities in the storage
     """
-    place = storage.get('Place', place_id)
+    place = storage.get(Place, place_id)
     if place is None:
         abort(404)
     places = [single.to_dict() for single in place.values()
@@ -68,7 +69,7 @@ def put_place(place_id):
     """
     update a place object from the storage
     """
-    place = storage.get('Place', place_id)
+    place = storage.get(Place, place_id)
     if place is None:
         abort(404)
     if not request.json:
