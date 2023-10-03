@@ -30,15 +30,15 @@ def state_by_id(state_id):
         abort(404)
     return jsonify(state.to_dict()), 200
 
-@app_views.route('states', methods=['POST'], strict_slashes=False)
+@app_views.route('/states', methods=['POST'], strict_slashes=False)
 def post_state():
     """
     post state to the storage
     """
     if not request.json:
         return jsonify({"error": "Not a JSON"}), 400
-    elif 'name' not in request.json:
-        return jsonify({"error": "Missing name"})
+    elif request.get_json().get('name') is None:
+        return jsonify({"error": "Missing name"}), 400
     else:
         data = request.get_json()
         new_state = State(**data)
@@ -55,7 +55,7 @@ def put_state(state_id):
         return jsonify({"error": "Not a JSON"}), 400
     state = storage.get(State, state_id)
     if state is None:
-        return jsonify(error="Not a JSON"), 400
+        abort(404)
     for k, v in request.json.items():
         if k not in ['id', 'created_at', 'updated_at']:
             setattr(state, k, v)
