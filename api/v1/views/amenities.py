@@ -25,13 +25,29 @@ def amenity_by_id(amenity_id):
     return all amenities by id provided
     """
     obj = []
-    amenity = storage.all(Amenity)
+    amenity = storage.get(Amenity, amenity_id)
     if amenity is None:
-        return jsonify(error="Not a JSON"), 400
+        abort(404)
     for single in amenity.values():
         if single.id == amenity_id:
             obj.append(single.to_dict())
     return jsonify(obj), 200
+
+
+@app_views.route('/amenities', methods=['POST'],
+                 strict_slashes=False)
+def post_amenity():
+    '''
+        creation of amenity object in the storage
+    '''
+    if not request.json:
+        return jsonify({"error": "Not a JSON"}), 400
+    if 'name' not in request.json:
+        return jsonify({"error": "Missing name"}), 400
+    data = request.get_json()
+    new_amenity = Amenity(**data)
+    new_amenity.save()
+    return jsonify(new_amenity.to_dict()), 201
 
 
 @app_views.route('/amenities/<amenity_id>', methods=['PUT'], strict_slashes=False)
