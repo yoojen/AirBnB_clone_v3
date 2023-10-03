@@ -20,10 +20,9 @@ def place_by_cities(city_id):
     place = storage.all(Place)
     if place is None:
         abort(404)
-    for single in place.values():
-        if single.city_id == city_id:
-            obj.append(single.to_dict())
-    return jsonify(obj), 200
+    cities = [single.to_dict() for single in city.values()
+              if single.city_id== city.id]
+    return jsonify(cities)
 
 
 @app_views.route('/places/<place_id>', methods=['GET'], strict_slashes=False)
@@ -31,11 +30,12 @@ def all_places(place_id):
     """
     returns all cities in the storage
     """
-    try:
-        place = storage.get('Place', place_id)
-        return jsonify(place.to_dict())
-    except Exception:
+    place = storage.get('Place', place_id)
+    if place is None:
         abort(404)
+    places = [single.to_dict() for single in place.values()
+              if place_id == place.id]
+    return jsonify(places))
 
 
 @app_views.route('cities/<city_id>/places', methods=['POST'], strict_slashes=False)
@@ -51,7 +51,7 @@ def post_place(city_id):
         return jsonify(error="Not a JSON"), 400
     if 'user_id' not in request.json:
         return({"error": "Missing user_id"}), 400
-    user = storage.get(User, request.json()['user_id'])
+    user = storage.get(User, request.json().get('user_id'))
     if user is None:
         abort(404)
     if 'name' not in request.json:
