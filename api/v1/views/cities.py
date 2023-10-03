@@ -3,6 +3,7 @@
 creates view for states
 """
 from api.v1.views import app_views
+from models.state import State
 from models.city import City
 from models import storage
 from flask import jsonify, request, abort
@@ -15,7 +16,8 @@ def cities_by_states(state_id):
     """
     obj = []
     city = storage.all(City)
-    if city is None:
+    state = storage.get(State, state_id)
+    if state is None:
         abort(404)
     for single in city.values():
         if single.state_id == state_id:
