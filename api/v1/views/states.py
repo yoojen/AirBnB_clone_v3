@@ -27,9 +27,8 @@ def state_by_id(state_id):
     obj = []
     state = storage.get(State, state_id)
     if state is None:
-        return jsonify(error="Not a JSON"), 400
-    obj.append(state.to_dict())
-    return jsonify(obj), 200
+        abort(404)
+    return jsonify(state.to_dict()), 200
 
 @app_views.route('states', methods=['POST'], strict_slashes=False)
 def post_state():
