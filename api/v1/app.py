@@ -7,8 +7,9 @@ from api.v1.views import app_views
 
 app = Flask(__name__)
 app.register_blueprint(app_views, url_prefix="/api/v1")
-apphost = os.getenv('HBNB_API_HOST', '0.0.0.0')
-appport = int(os.getenv('HBNB_API_PORT', '5000'))
+host = os.getenv('HBNB_API_HOST', '0.0.0.0')
+port = int(os.getenv('HBNB_API_PORT', '5000'))
+app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 
 
 @app.teardown_appcontext
@@ -28,4 +29,4 @@ def not_found(nopage):
 
 
 if __name__ == "__main__":
-    app.run(host=apphost, port=appport, threaded=True)
+    app.run(host=host, port=port, threaded=True)
