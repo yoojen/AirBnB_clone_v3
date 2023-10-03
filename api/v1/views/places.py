@@ -34,7 +34,7 @@ def all_places(place_id):
         abort(404)
     places = [single.to_dict() for single in place.values()
               if place_id == place.id]
-    return jsonify(places))
+    return jsonify(places)
 
 
 @app_views.route('cities/<city_id>/places', methods=['POST'], strict_slashes=False)
