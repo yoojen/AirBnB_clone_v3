@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+"""Creation of view for places that are in the storage"""
 from api.v1.views import app_views
 from models.place import Place
 from models.city import City
